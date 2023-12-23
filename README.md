@@ -14,7 +14,7 @@
 [Open Software Catalogue](https://github.com/aeonSolutions/aeonlabs-open-software-catalogue)  >> WCH Vendor ID Programming
 
 <p align="right">
- <a href="https://github-com.translate.goog/aeonSolutions/aeonlabs-open-software-catalogue?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=en&_x_tr_pto=wapp">Change Language</a> <br>
+ <a href="https://github-com.translate.goog/aeonSolutions/AeonLabs-WCH-Vendor-ID-Programming?_x_tr_sl=nl&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp">Change Language</a> <br>
 Last update: 23-12-2023
 </p>
 
