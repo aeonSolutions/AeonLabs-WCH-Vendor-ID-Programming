@@ -13,10 +13,83 @@
 
 <p align="right">
  <a href="https://github-com.translate.goog/aeonSolutions/aeonlabs-open-software-catalogue?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=en&_x_tr_pto=wapp">Change Language</a> <br>
-Last update: 22-12-2023
+Last update: 23-12-2023
 </p>
 
 # WCH Vendor ID Programming
+
+
+**[Adafruit's Simple Arduino-based USB VID & PID tester](https://learn.adafruit.com/simple-arduino-based-usb-vid-and-pid-tester/lets-do-this-thing)** <br>
+This is a project Adafruit uses to check incoming goods as well as QC products out of manufacturing. If you have a USB device, the chip inside has a unique VID (vendor ID) and PID (product ID). For non-programmable parts, this pair is 'fixed' by the chipset itself. For programmable parts, like a microcontroller, the VID/PID is programmed in. Basically, you can use it to check chipsets and/or whether your Flora, say, has the right bootloader installed.
+
+``` c++
+// include the library code:
+
+#include <Wire.h>
+#include <utility/Adafruit_MCP23017.h>
+#include <Adafruit_RGBLCDShield.h>
+#include <avrpins.h>
+#include <max3421e.h>
+#include <usbhost.h>
+#include <usb_ch9.h>
+#include <Usb.h>
+#include <usbhub.h>
+#include <address.h>
+
+USB     Usb;
+Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
+
+
+void setup () {
+  Serial.begin(9600);			/* Initialize serial for status msgs */
+  Serial.println(F("\nVID PID tester"));
+
+  lcd.begin(16, 2);
+  lcd.setBacklight(0x7);
+  lcd.print("USB VID/PID Test");
+  lcd.setCursor(0,1);
+  lcd.print("Waiting for USB");
+}
+
+void loop (void) {
+  
+  // initialize USB
+  Serial.println("USB Start");
+
+  if (Usb.Init() == -1) {
+    Serial.println("OSC did not start.");
+    while (1);
+  }
+  Serial.println("Waiting for connection...");
+
+  while (1) {
+    Usb.Task();
+  
+    if( Usb.getUsbTaskState() == USB_STATE_RUNNING ) break;
+  }
+  uint8_t rcode = 0;
+  byte num_conf = 0;
+
+  USB_DEVICE_DESCRIPTOR buf;
+  rcode = Usb.getDevDescr(1, 0, 0x12, ( uint8_t *)&buf );
+  if( rcode ) {
+    Serial.print("USB ERROR: "); Serial.println( rcode );
+    while (1);
+  }
+  Serial.print("VID: 0x"); Serial.print(buf.idVendor, HEX);
+  Serial.print(" PID: 0x"); Serial.println(buf.idProduct, HEX);
+
+  lcd.clear();
+  lcd.print("VID: "); lcd.print(buf.idVendor, HEX);
+  lcd.setCursor(0,1);
+  lcd.print("PID: "); lcd.print(buf.idProduct, HEX);
+  
+  Serial.println("***Done!***");
+  
+  while (1);
+}
+```
+
 
 <br />
 <br />
